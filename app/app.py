@@ -16,7 +16,7 @@ def home():
     <html>
       <head><title>Projeto - DevOps</title></head>
       <body style="font-family: sans-serif; text-align: center; margin-top: 80px;">
-        <h1>Projeto: Flask + Docker + Nginx na AWS</h1>
+        <h1>Projeto 1 (deploy automático): Flask + Docker + Nginx na AWS</h1>
         <p>Versão (commit): <b>{VERSION}</b></p>
         <p>Container (hostname): <b>{socket.gethostname()}</b></p>
         <p>Hora do servidor: <b>{agora}</b></p>

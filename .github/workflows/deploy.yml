@@ -1,0 +1,27 @@
+name: Deploy na EC2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar acesso SSH
+        env:
+          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key.pem
+          chmod 600 ~/.ssh/deploy_key.pem
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+
+      - name: Atualizar código e reiniciar o container
+        env:
+          HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          ssh -i ~/.ssh/deploy_key.pem ubuntu@"$HOST" \
+            "cd ~/app && git fetch origin main && git reset --hard origin/main && bash scripts/deploy.sh"
